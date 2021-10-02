@@ -1,0 +1,60 @@
+This is a style guide for me
+
+GENERAL
+
+Optimally, tabs for block indentation and spaces for alignment.
+(unless emacs wants to do something different, just let emacs be emacs)
+Braces go after thing.
+Use space between reserved things (if, while, for) and the paren.
+(people will think you're a bad person if you do not)
+But no space between function name and paren for arg list.
+The star in a pointer declaration is put with the type (unless int *p, a).
+
+int function( Arg arg,
+              char* str,   // or strp
+              Arg* p_arg ) // spaced, because characters
+{
+	// tabbed, because block
+	// simple -> no spaces between paren and condition
+	if (condition)
+	{
+	}
+	// complicated -> spaces between paren and condition
+	else if ( big condition )
+	{
+	}
+	else
+		...
+	for (;;);
+}
+call_function()
+call_function(arg)
+call_function( arg )
+call_function( arg, arg )
+int function()
+int function( arg )
+int function( arg, arg )
+int function
+( arg, arg )
+
+
+
+VARIABLE NAMING
+
+Hungarian notation
+Generally, unless information about the type is already known
+   (like, strings are very often pointers to arrays of chars),
+   information about the type must be included.
+
+If a variable "var" is semantically being passed
+    by reference with a pointer, it must be named "p_var".
+An array must be "a_var", unless it expected to be an array (like a string).
+
+c_count
+n_count_or_index
+i_index
+sz_string_pointer
+fp_file_pointer
+ly_width
+lx_height
+l_room_tile // room length / tile length, usually integer

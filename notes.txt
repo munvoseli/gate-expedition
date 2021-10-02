@@ -1,0 +1,50 @@
+SDL_image
+
+IMG_Init(IMG_INIT_PNG)
+	call after SDL_Init
+
+IMG_Quit
+	call before SDL_Quit
+
+
+SDL_CreateRenderer(window,-1,0)
+	-> renderer
+
+IMG_Load
+	image file name -> surface
+
+SDL_LoadBMP
+	BMP file name to SDL_Surface
+
+SDL_BlitSurface
+	surface -> surface, with src and dest rects, same scale
+
+SDL_CreateTextureFromSurface
+	surface -> texture
+
+SDL_UpdateTexture
+	Uint32 to SDL_Texture
+
+SDL_RenderClear
+	clears with thing set by SDL_SetRenderDrawColor
+
+SDL_RenderCopy
+	SDL_Texture to SDL_Renderer, optional src and dst rects
+
+SDL_RenderPresent
+	SDL_Renderer to screen
+
+blitting:
+file name -> surface -> texture -> renderer -> screen
+You want it to be a texture as fast as possible (and clean up the surface afterward) because textures use graphics memory and surfaces use cpu memory or something like that
+
+
+
+cleaning up:
+
+SDL_FreeSurface
+SDL_DestroyTexture
+SDL_DestroyRenderer
+SDL_DestroyWindow
+IMG_Quit
+SDL_Quit
