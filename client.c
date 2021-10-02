@@ -41,7 +41,6 @@ int main
 	{
 		while (SDL_PollEvent (&event))
 			keepGoing &= handle_event (&event, &player);
-		update_controls (keystates, &player.controls);
 		loop_client (keystates, &player, &room);
 		draw_room (&room, renp, texp_sprite, texp_bg);
 		draw_player (&player, renp, texp_sprite);

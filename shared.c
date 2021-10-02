@@ -44,12 +44,17 @@ typedef struct Room_struct
 	Tileid tiles [Lx_tile_room] [Ly_tile_room];
 } Room_t;
 
+typedef struct Control_pair_struct
+{
+	unsigned char held;
+	unsigned char dur;
+} Control;
+
 typedef struct Controls_struct
 {
-	unsigned char dir_held [4]; // use breadquest directions, 0N 1E 2S 3W
-	unsigned char dir_dur [4];
-	unsigned char jump_held;
-	unsigned char jump_dur;
+	Control dir [4]; // use breadquest directions, 0N 1E 2S 3W
+	Control inr [4]; // interaction
+	Control jump;
 } Controls_t;
 
 typedef struct Player_struct
