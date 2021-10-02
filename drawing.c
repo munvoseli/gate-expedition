@@ -26,7 +26,8 @@ void load_spritesheet
 	SDL_FreeSurface (surp);
 }
 
-void set_rect_from_adj (SDL_Rect * rect, Tileid h, Tileid v, Tileid d, Tileid s)
+void set_rect_from_adj
+( SDL_Rect * rect, Tileid h, Tileid v, Tileid d, Tileid s )
 {
 	rect->x = Lx_pix_tile * (v | (h << 1));
 	rect->y = Ly_pix_tile * d;
@@ -38,81 +39,56 @@ void set_rect_from_adj (SDL_Rect * rect, Tileid h, Tileid v, Tileid d, Tileid s)
 	}
 }
 
+void update_tiles_corner
+( Room_t * p_room, SDL_Renderer * renp,
+  SDL_Texture * texp_sprite,
+  int x0, int x1, int y0, int y1, int ho, int vo, int hpo, int vpo )
+{
+	Tileid h, v, d;
+	SDL_Rect src, dst;
+	for (int i = x0; i < x1; ++i)
+	{
+		for (int j = y0; j < y1; ++j)
+		{
+			h = p_room->tiles[i+ho][j   ];
+			d = p_room->tiles[i+ho][j+vo];
+			v = p_room->tiles[i   ][j+vo];
+			set_rect_from_adj (&src, h,v,d,p_room->tiles[i][j]);
+			src.x += hpo;
+			src.y += vpo;
+			dst.x = i * Lx_pix_tile + hpo;
+			dst.y = j * Ly_pix_tile + vpo;
+			src.w = dst.w = Lx_pix_tile / 2;
+			src.h = dst.h = Ly_pix_tile / 2;
+			SDL_RenderCopy (renp, texp_sprite, &src, &dst);
+		}
+	}
+}
+
 void update_room_texture
-(Room_t * p_room, SDL_Renderer * renp, SDL_Texture * texp_sprite, SDL_Texture * texp_room)
+( Room_t * p_room, SDL_Renderer * renp,
+  SDL_Texture * texp_sprite, SDL_Texture * texp_room )
 {
 	Tileid h, v, d;
 	int i, j;
 	SDL_Rect src, dst;
 	SDL_SetRenderTarget (renp, texp_room);
 	// top left
-	for (i = 1; i < Lx_tile_room; ++i)
-	{
-		for (j = 1; j < Ly_tile_room; ++j)
-		{
-			h = p_room->tiles[i-1][j];
-			d = p_room->tiles[i-1][j-1];
-			v = p_room->tiles[i][j-1];
-			set_rect_from_adj (&src, h,v,d,p_room->tiles[i][j]);
-			dst.x = i * Lx_pix_tile;
-			dst.y = j * Ly_pix_tile;
-			src.w = dst.w = Lx_pix_tile / 2;
-			src.h = dst.h = Ly_pix_tile / 2;
-			SDL_RenderCopy (renp, texp_sprite, &src, &dst);
-		}
-	}
+	update_tiles_corner( p_room, renp, texp_sprite,
+			     1, Lx_tile_room, 1, Ly_tile_room,
+			     -1, -1, 0, 0);
 	// top right
-	for (i = 0; i < Lx_tile_room - 1; ++i)
-	{
-		for (j = 1; j < Ly_tile_room; ++j)
-		{
-			h = p_room->tiles[i+1][j];
-			d = p_room->tiles[i+1][j-1];
-			v = p_room->tiles[i][j-1];
-			set_rect_from_adj (&src, h,v,d,p_room->tiles[i][j]);
-			src.x += 8;
-			dst.x = i * Lx_pix_tile + 8;
-			dst.y = j * Ly_pix_tile;
-			src.w = dst.w = Lx_pix_tile / 2;
-			src.h = dst.h = Ly_pix_tile / 2;
-			SDL_RenderCopy (renp, texp_sprite, &src, &dst);
-		}
-	}
+	update_tiles_corner( p_room, renp, texp_sprite,
+			     0, Lx_tile_room - 1, 1, Ly_tile_room,
+			     1, -1, 8, 0);
 	// bottom right
-	for (i = 0; i < Lx_tile_room - 1; ++i)
-	{
-		for (j = 0; j < Ly_tile_room - 1; ++j)
-		{
-			h = p_room->tiles[i+1][j];
-			d = p_room->tiles[i+1][j+1];
-			v = p_room->tiles[i][j+1];
-			set_rect_from_adj (&src, h,v,d,p_room->tiles[i][j]);
-			src.x += 8;
-			src.y += 8;
-			dst.x = i * Lx_pix_tile + 8;
-			dst.y = j * Ly_pix_tile + 8;
-			src.w = dst.w = Lx_pix_tile / 2;
-			src.h = dst.h = Ly_pix_tile / 2;
-			SDL_RenderCopy (renp, texp_sprite, &src, &dst);
-		}
-	}
+	update_tiles_corner( p_room, renp, texp_sprite,
+			     0, Lx_tile_room - 1, 0, Ly_tile_room - 1,
+			     1, 1, 8, 8);
 	// bottom left
-	for (i = 1; i < Lx_tile_room; ++i)
-	{
-		for (j = 0; j < Ly_tile_room - 1; ++j)
-		{
-			h = p_room->tiles[i-1][j];
-			d = p_room->tiles[i-1][j+1];
-			v = p_room->tiles[i][j+1];
-			set_rect_from_adj (&src, h,v,d,p_room->tiles[i][j]);
-			src.y += 8;
-			dst.x = i * Lx_pix_tile;
-			dst.y = j * Ly_pix_tile + 8;
-			src.w = dst.w = Lx_pix_tile / 2;
-			src.h = dst.h = Ly_pix_tile / 2;
-			SDL_RenderCopy (renp, texp_sprite, &src, &dst);
-		}
-	}
+	update_tiles_corner( p_room, renp, texp_sprite,
+			     1, Lx_tile_room, 0, Ly_tile_room - 1,
+			     -1, 1, 0, 8);
 	SDL_RenderPresent (renp);
 	SDL_SetRenderTarget (renp, NULL); // set back to window rendering
 }
@@ -120,8 +96,8 @@ void update_room_texture
 void draw_room
 (Room_t * p_room, SDL_Renderer * renp, SDL_Texture * texp_sprite, SDL_Texture * texp_bg)
 {
-	update_room_texture (p_room, renp, texp_sprite, texp_bg);
-	SDL_RenderCopy (renp, texp_bg, NULL, NULL);
+	update_room_texture( p_room, renp, texp_sprite, texp_bg );
+	SDL_RenderCopy( renp, texp_bg, NULL, NULL );
 }
 
 void draw_player
