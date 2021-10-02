@@ -40,6 +40,7 @@ typedef struct Pos_struct // in 1/256 of a tile
 
 typedef struct Room_struct
 {
+	unsigned int id;
 	Tileid tiles [Lx_tile_room] [Ly_tile_room];
 } Room_t;
 

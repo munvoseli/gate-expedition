@@ -34,7 +34,7 @@ int main
 	drawing_init (&winp, &renp, &texp_bg);
 	load_spritesheet (renp, &texp_sprite);
 
-	init_room (&room);
+	init_room( 0, &room );
 	init_client (&player);
 	init_controls (&player.controls);
 	while (keepGoing)
@@ -54,5 +54,6 @@ int main
 	SDL_DestroyWindow (winp);
 	IMG_Quit ();
 	SDL_Quit ();
+	save_room( &room );
 	return 0;
 }
