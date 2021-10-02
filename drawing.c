@@ -46,35 +46,16 @@ void update_tiles_corner
 {
 	Tileid h, v, d;
 	SDL_Rect src, dst;
-	int x0, x1, y0, y1, ho, vo, hpo, vpo;
-	if (xInTile)
-	{
-		x0 = 0;
-		x1 = Lx_tile_room - 1;
-		ho = 1;
-		hpo = 8;
-	}
-	else
-	{
-		x0 = 1;
-		x1 = Lx_tile_room;
-		ho = -1;
-		hpo = 0;
-	}
-	if (yInTile)
-	{
-		y0 = 0;
-		y1 = Ly_tile_room - 1;
-		vo = 1;
-		vpo = 8;
-	}
-	else
-	{
-		y0 = 1;
-		y1 = Ly_tile_room;
-		vo = -1;
-		vpo = 0;
-	}
+	int x0, x1, y0, y1, ho, vo, xpo, ypo;
+	x0  =            1 - xInTile;
+	x1  = Lx_tile_room - xInTile;
+	xpo =            8 * xInTile;
+	ho  = xInTile ? 1 : -1;
+	
+	y0  =            1 - yInTile; // beginning and
+	y1  = Ly_tile_room - yInTile; // end for the loops
+	ypo =            8 * yInTile; // src/dst pixel offset
+	vo  = yInTile ? 1 : -1; // vertical tile offset
 	for (int i = x0; i < x1; ++i)
 	{
 		for (int j = y0; j < y1; ++j)
@@ -83,10 +64,10 @@ void update_tiles_corner
 			d = p_room->tiles[i+ho][j+vo];
 			v = p_room->tiles[i   ][j+vo];
 			set_rect_from_adj (&src, h,v,d,p_room->tiles[i][j]);
-			src.x += hpo;
-			src.y += vpo;
-			dst.x = i * Lx_pix_tile + hpo;
-			dst.y = j * Ly_pix_tile + vpo;
+			src.x += xpo;
+			src.y += ypo;
+			dst.x = i * Lx_pix_tile + xpo;
+			dst.y = j * Ly_pix_tile + ypo;
 			src.w = dst.w = Lx_pix_tile / 2;
 			src.h = dst.h = Ly_pix_tile / 2;
 			SDL_RenderCopy (renp, texp_sprite, &src, &dst);
