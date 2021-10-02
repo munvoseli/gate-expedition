@@ -42,10 +42,39 @@ void set_rect_from_adj
 void update_tiles_corner
 ( Room_t * p_room, SDL_Renderer * renp,
   SDL_Texture * texp_sprite,
-  int x0, int x1, int y0, int y1, int ho, int vo, int hpo, int vpo )
+  char xInTile, char yInTile )
 {
 	Tileid h, v, d;
 	SDL_Rect src, dst;
+	int x0, x1, y0, y1, ho, vo, hpo, vpo;
+	if (xInTile)
+	{
+		x0 = 0;
+		x1 = Lx_tile_room - 1;
+		ho = 1;
+		hpo = 8;
+	}
+	else
+	{
+		x0 = 1;
+		x1 = Lx_tile_room;
+		ho = -1;
+		hpo = 0;
+	}
+	if (yInTile)
+	{
+		y0 = 0;
+		y1 = Ly_tile_room - 1;
+		vo = 1;
+		vpo = 8;
+	}
+	else
+	{
+		y0 = 1;
+		y1 = Ly_tile_room;
+		vo = -1;
+		vpo = 0;
+	}
 	for (int i = x0; i < x1; ++i)
 	{
 		for (int j = y0; j < y1; ++j)
@@ -73,22 +102,10 @@ void update_room_texture
 	int i, j;
 	SDL_Rect src, dst;
 	SDL_SetRenderTarget (renp, texp_room);
-	// top left
-	update_tiles_corner( p_room, renp, texp_sprite,
-			     1, Lx_tile_room, 1, Ly_tile_room,
-			     -1, -1, 0, 0);
-	// top right
-	update_tiles_corner( p_room, renp, texp_sprite,
-			     0, Lx_tile_room - 1, 1, Ly_tile_room,
-			     1, -1, 8, 0);
-	// bottom right
-	update_tiles_corner( p_room, renp, texp_sprite,
-			     0, Lx_tile_room - 1, 0, Ly_tile_room - 1,
-			     1, 1, 8, 8);
-	// bottom left
-	update_tiles_corner( p_room, renp, texp_sprite,
-			     1, Lx_tile_room, 0, Ly_tile_room - 1,
-			     -1, 1, 0, 8);
+	update_tiles_corner( p_room, renp, texp_sprite, 0, 0 ); // top left
+	update_tiles_corner( p_room, renp, texp_sprite, 1, 0 ); // top right
+	update_tiles_corner( p_room, renp, texp_sprite, 1, 1 ); // lower right
+	update_tiles_corner( p_room, renp, texp_sprite, 0, 1 ); // lower left
 	SDL_RenderPresent (renp);
 	SDL_SetRenderTarget (renp, NULL); // set back to window rendering
 }
