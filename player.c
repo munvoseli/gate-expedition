@@ -87,10 +87,10 @@ Pos mv_player_room
 	max_diff.x = 0;
 	max_diff.y = 0;
 	max_diff_l = 0;
-	tile_bgn.x = cap((p_player->pos.x - p_player->size.x    ) >> 8, 0, Lx_tile_room);
-	tile_bgn.y = cap((p_player->pos.y - p_player->size.y    ) >> 8, 0, Ly_tile_room);
-	tile_end.x = cap((p_player->pos.x + p_player->size.x - 1) >> 8, 0, Lx_tile_room);
-	tile_end.y = cap((p_player->pos.y + p_player->size.y - 1) >> 8, 0, Ly_tile_room);
+	tile_bgn.x = cap((p_player->pos.x - p_player->size.x    ) >> 8, 0, Lx_room_tile);
+	tile_bgn.y = cap((p_player->pos.y - p_player->size.y    ) >> 8, 0, Ly_room_tile);
+	tile_end.x = cap((p_player->pos.x + p_player->size.x - 1) >> 8, 0, Lx_room_tile);
+	tile_end.y = cap((p_player->pos.y + p_player->size.y - 1) >> 8, 0, Ly_room_tile);
 	for (tile_cur.x = tile_bgn.x; tile_cur.x <= tile_end.x; ++tile_cur.x)
 	{
 		for (tile_cur.y = tile_bgn.y; tile_cur.y <= tile_end.y; ++tile_cur.y)

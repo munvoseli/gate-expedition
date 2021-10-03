@@ -1,7 +1,7 @@
 
 
-#define Lx_tile_room 40
-#define Ly_tile_room 40
+#define Lx_room_tile 40
+#define Ly_room_tile 40
 
 
 #define TILE_COLL 1
@@ -41,7 +41,7 @@ typedef struct Pos_struct // in 1/256 of a tile
 typedef struct Room_struct
 {
 	unsigned int id;
-	Tileid tiles [Lx_tile_room] [Ly_tile_room];
+	Tileid tiles [Lx_room_tile] [Ly_room_tile];
 } Room_t;
 
 typedef struct Control_pair_struct

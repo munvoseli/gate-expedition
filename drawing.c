@@ -1,20 +1,20 @@
 
 
 
-#define Lx_pix_tile 16
-#define Ly_pix_tile 16
+#define Lx_tile_pix 16
+#define Ly_tile_pix 16
 
-#define Lx_pix_win 640
-#define Ly_pix_win 640
+#define Lx_win_pix 640
+#define Ly_win_pix 640
 
 void drawing_init
 (SDL_Window ** p_winp, SDL_Renderer ** p_renp, SDL_Texture ** p_texp_bg)
 {
 	SDL_Init (SDL_INIT_EVERYTHING);
 	IMG_Init (IMG_INIT_PNG);
-	*p_winp = SDL_CreateWindow ("window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, Lx_pix_win, Ly_pix_win, 0);
+	*p_winp = SDL_CreateWindow ("window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, Lx_win_pix, Ly_win_pix, 0);
 	*p_renp = SDL_CreateRenderer (*p_winp, -1, 0);
-	*p_texp_bg = SDL_CreateTexture (*p_renp, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET, Lx_pix_win, Ly_pix_win);
+	*p_texp_bg = SDL_CreateTexture (*p_renp, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET, Lx_win_pix, Ly_win_pix);
 }
 
 void load_spritesheet
@@ -29,8 +29,8 @@ void load_spritesheet
 void set_rect_from_adj
 ( SDL_Rect * rect, Tileid h, Tileid v, Tileid d, Tileid s )
 {
-	rect->x = Lx_pix_tile * (v | (h << 1));
-	rect->y = Ly_pix_tile * d;
+	rect->x = Lx_tile_pix * (v | (h << 1));
+	rect->y = Ly_tile_pix * d;
 	rect->y += 32 * s;
 	if (s == 0)
 	{
@@ -48,12 +48,12 @@ void update_tiles_corner
 	SDL_Rect src, dst;
 	int x0, x1, y0, y1, ho, vo, xpo, ypo;
 	x0  =            1 - xInTile;
-	x1  = Lx_tile_room - xInTile;
+	x1  = Lx_room_tile - xInTile;
 	xpo =            8 * xInTile;
 	ho  = xInTile ? 1 : -1;
 	
 	y0  =            1 - yInTile; // beginning and
-	y1  = Ly_tile_room - yInTile; // end for the loops
+	y1  = Ly_room_tile - yInTile; // end for the loops
 	ypo =            8 * yInTile; // src/dst pixel offset
 	vo  = yInTile ? 1 : -1; // vertical tile offset
 	for (int i = x0; i < x1; ++i)
@@ -66,10 +66,10 @@ void update_tiles_corner
 			set_rect_from_adj (&src, h,v,d,p_room->tiles[i][j]);
 			src.x += xpo;
 			src.y += ypo;
-			dst.x = i * Lx_pix_tile + xpo;
-			dst.y = j * Ly_pix_tile + ypo;
-			src.w = dst.w = Lx_pix_tile / 2;
-			src.h = dst.h = Ly_pix_tile / 2;
+			dst.x = i * Lx_tile_pix + xpo;
+			dst.y = j * Ly_tile_pix + ypo;
+			src.w = dst.w = Lx_tile_pix / 2;
+			src.h = dst.h = Ly_tile_pix / 2;
 			SDL_RenderCopy (renp, texp_sprite, &src, &dst);
 		}
 	}

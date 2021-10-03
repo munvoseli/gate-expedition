@@ -2,8 +2,8 @@
 char generate_room( unsigned int id, Room_t* p_room )
 {
 	int i, j;
-	for (i = 0; i < Lx_tile_room; ++i)
-		for (j = 0; j < Ly_tile_room; ++j)
+	for (i = 0; i < Lx_room_tile; ++i)
+		for (j = 0; j < Ly_room_tile; ++j)
 			p_room->tiles[i][j] = 1;//rand() & 1;
 	for (i = 9; i < 31; ++i)
 		for (j = 9; j < 31; ++j)
@@ -19,7 +19,7 @@ void save_room( Room_t* p_room )
 	char file_name [64];
 	sprintf( file_name, "%d.data", p_room->id );
 	FILE* fp = fopen( file_name, "w" );
-	fwrite( &p_room->tiles, 1, Lx_tile_room * Ly_tile_room, fp );
+	fwrite( &p_room->tiles, 1, Lx_room_tile * Ly_room_tile, fp );
 	fclose( fp );
 }
 
@@ -29,7 +29,7 @@ char load_room( unsigned int id, Room_t* p_room )
 	char file_name [64];
 	sprintf( file_name, "%d.data", id );
 	FILE* fp = fopen( file_name, "r" );
-	size_t desired = Lx_tile_room * Ly_tile_room;
+	size_t desired = Lx_room_tile * Ly_room_tile;
 	size_t loaded;
 	if (fp)
 	{
