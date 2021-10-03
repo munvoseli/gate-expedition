@@ -4,25 +4,48 @@
 #define Lx_tile_pix 16
 #define Ly_tile_pix 16
 
-#define Lx_win_pix 640
+#define Lx_room_pix 640
+#define Ly_room_pix 640
+#define Lx_inventory_pix 320
+#define Ly_inventory_pix 320
+
+#define Lx_win_pix 960
 #define Ly_win_pix 640
 
-void drawing_init
-(SDL_Window ** p_winp, SDL_Renderer ** p_renp, SDL_Texture ** p_texp_bg)
+#define Lx_font_pix 256
+#define Ly_font_pix 128
+
+void drawing_init( SDL_Window** p_winp, SDL_Renderer** p_renp,
+		   SDL_Texture** p_texp_roombg,
+		   SDL_Texture** p_texp_font,
+		   SDL_Texture** p_texp_inventory )
 {
 	SDL_Init (SDL_INIT_EVERYTHING);
 	IMG_Init (IMG_INIT_PNG);
 	*p_winp = SDL_CreateWindow ("window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, Lx_win_pix, Ly_win_pix, 0);
 	*p_renp = SDL_CreateRenderer (*p_winp, -1, 0);
-	*p_texp_bg = SDL_CreateTexture (*p_renp, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET, Lx_win_pix, Ly_win_pix);
+	*p_texp_roombg = SDL_CreateTexture (*p_renp, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET, Lx_room_pix, Ly_room_pix);
+	*p_texp_font = SDL_CreateTexture (*p_renp, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET, Lx_font_pix, Ly_font_pix);
+	*p_texp_inventory = SDL_CreateTexture (*p_renp, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET, Lx_inventory_pix, Ly_inventory_pix);
+}
+
+void load_texture_from_image( SDL_Renderer* renp,
+			      SDL_Texture** p_texp,
+			      char* file_name )
+{
+	SDL_Surface* surp = IMG_Load( file_name );
+	*p_texp = SDL_CreateTextureFromSurface( renp, surp );
+	SDL_FreeSurface( surp );
 }
 
 void load_spritesheet
-(SDL_Renderer * renp, SDL_Texture ** p_texp)
+(SDL_Renderer * renp, SDL_Texture** p_texp, SDL_Texture** p_texp_font)
 {
 	SDL_Surface * surp;
-	surp = IMG_Load ("sprites.png");
+	surp = IMG_Load("sprites.png");
 	*p_texp = SDL_CreateTextureFromSurface (renp, surp);
+	surp = IMG_Load("font.png");
+	*p_texp_font = SDL_CreateTextureFromSurface (renp, surp);
 	SDL_FreeSurface (surp);
 }
 
@@ -36,6 +59,11 @@ void set_rect_from_adj
 	{
 		rect->x = rect->x < 48 ? 0 : 48;
 		rect->y = 0;
+	}
+	else if (s == 2)
+	{
+		rect->x = 0;
+		rect->y = 32 * 2;
 	}
 }
 
@@ -91,11 +119,38 @@ void update_room_texture
 	SDL_SetRenderTarget (renp, NULL); // set back to window rendering
 }
 
+// does not set render target
+void draw_text( SDL_Renderer* renp, SDL_Texture* texp_font,
+		int pix_x, int pix_y, char* str )
+{
+	SDL_Rect src, dst;
+	src.w = 16;
+	src.h = 16;
+	dst.x = pix_x;
+	dst.y = pix_y;
+	dst.w = 16;
+	dst.h = 16;
+	int i = 0;
+	while (str[i] != 0)
+	{
+		src.x = (str[i] & 15) << 4;
+		src.y = str[i] & (15 << 4);
+		SDL_RenderCopy( renp, texp_font, &src, &dst );
+		dst.x += 16;
+		++i;
+	}
+}
+
 void draw_room
 (Room_t * p_room, SDL_Renderer * renp, SDL_Texture * texp_sprite, SDL_Texture * texp_bg)
 {
 	update_room_texture( p_room, renp, texp_sprite, texp_bg );
-	SDL_RenderCopy( renp, texp_bg, NULL, NULL );
+	SDL_Rect src, dst;
+	dst.x = 0;
+	dst.y = 0;
+	dst.w = Lx_room_pix;
+	dst.h = Ly_room_pix;
+	SDL_RenderCopy( renp, texp_bg, NULL, &dst );
 }
 
 void draw_player

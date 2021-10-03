@@ -57,6 +57,20 @@ typedef struct Controls_struct
 	Control jump;
 } Controls_t;
 
+typedef unsigned int Item;
+
+typedef struct Inventory_item_struct
+{
+	Item id;
+	unsigned int amount;
+} Inventory_item;
+
+// Data that does not relate to the physics character and should be saved
+typedef struct Player_data_struct
+{
+	Inventory_item inventory [256];
+} Pldata;
+
 typedef struct Player_struct
 {
 	Pos pos;
@@ -65,6 +79,5 @@ typedef struct Player_struct
 	char is_on_ground;
 	char has_jumped;
 	Controls_t controls;
+	Pldata pldata;
 } Player_t;
-
-

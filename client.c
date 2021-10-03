@@ -22,8 +22,10 @@ int main
 	SDL_Event event;
 	SDL_Window * winp;
 	SDL_Renderer * renp;
-	SDL_Texture * texp_sprite;
-	SDL_Texture * texp_bg;
+	SDL_Texture * texp_sprite; // intermediate
+	SDL_Texture * texp_bg; // for display
+	SDL_Texture* texp_font; // intermediate
+	SDL_Texture* texp_inventory; // for display
 
 	Player_t player;
 
@@ -31,8 +33,8 @@ int main
 	char keepGoing = 1;
 	const Uint8 * keystates = SDL_GetKeyboardState (NULL);
 
-	drawing_init (&winp, &renp, &texp_bg);
-	load_spritesheet (renp, &texp_sprite);
+	drawing_init (&winp, &renp, &texp_bg, &texp_font, &texp_inventory);
+	load_spritesheet (renp, &texp_sprite, &texp_font);
 
 	init_room( 0, &room );
 	init_client (&player);
@@ -44,6 +46,7 @@ int main
 		loop_client (keystates, &player, &room);
 		draw_room (&room, renp, texp_sprite, texp_bg);
 		draw_player (&player, renp, texp_sprite);
+		draw_text( renp, texp_font, 0, 0, "0123456789" );
 		SDL_RenderPresent (renp);
 		SDL_Delay (65);
 	}
