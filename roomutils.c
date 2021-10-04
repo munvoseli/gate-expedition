@@ -4,11 +4,21 @@ char generate_room( unsigned int id, Room_t* p_room )
 	int i, j;
 	for (i = 0; i < Lx_room_tile; ++i)
 		for (j = 0; j < Ly_room_tile; ++j)
-			p_room->tiles[i][j] = 1;//rand() & 1;
+			p_room->tiles[i][j] = rand() & 1;
+	for (i = 0; i < Lx_room_tile; ++i)
+	{
+		p_room->tiles[i][0] = 1;
+		p_room->tiles[i][Ly_room_tile - 1] = 1;
+		p_room->tiles[0][i] = 1;
+		p_room->tiles[Lx_room_tile - 1][i] = 1;
+	}
 	for (i = 9; i < 31; ++i)
 		for (j = 9; j < 31; ++j)
 		p_room->tiles[i][j] = 0;
 	p_room->id = id;
+	j = rand() % 2 + 2;
+	for (i = 0; i < j; ++i)
+		p_room->tiles[rand() % 38 + 1][rand() % 38 + 1] = 2;
 	//p_room->tiles[20][15] = 1;
 	return 0;
 }
