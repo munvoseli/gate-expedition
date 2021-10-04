@@ -179,6 +179,23 @@ void player_test_portal( Room_t* p_room, Player_t* p_player )
 {
 	int tile_x = p_player->pos.x >> 8;
 	int tile_y = p_player->pos.y >> 8;
-	if (p_room->tiles[tile_x][tile_y] == 2)
-		switch_to_room_id( 1 - p_room->id, p_room );
+	if (p_room->tiles[tile_x][tile_y] != 2)
+		return;
+	int sum = 0;
+	sum |= p_room->tiles[tile_x - 1][tile_y - 1] & 3;
+	sum <<= 2;
+	sum |= p_room->tiles[tile_x - 1][tile_y    ] & 3;
+	sum <<= 2;
+	sum |= p_room->tiles[tile_x - 1][tile_y + 1] & 3;
+	sum <<= 2;
+	sum |= p_room->tiles[tile_x    ][tile_y + 1] & 3;
+	sum <<= 2;
+	sum |= p_room->tiles[tile_x + 1][tile_y + 1] & 3;
+	sum <<= 2;
+	sum |= p_room->tiles[tile_x + 1][tile_y    ] & 3;
+	sum <<= 2;
+	sum |= p_room->tiles[tile_x + 1][tile_y - 1] & 3;
+	sum <<= 2;
+	sum |= p_room->tiles[tile_x    ][tile_y - 1] & 3;
+	switch_to_room_id( sum, p_room );
 }
