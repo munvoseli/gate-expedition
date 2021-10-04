@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <time.h>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -33,6 +33,7 @@ int main
 	char keepGoing = 1;
 	const Uint8 * keystates = SDL_GetKeyboardState (NULL);
 
+	srand((unsigned int) time(NULL));
 	drawing_init (&winp, &renp, &texp_bg, &texp_font, &texp_inventory);
 	load_spritesheet (renp, &texp_sprite, &texp_font);
 
