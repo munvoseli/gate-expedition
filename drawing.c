@@ -167,3 +167,51 @@ void draw_player
 	dst.h = 12;
 	SDL_RenderCopy (renp, texp_sprite, &src, &dst);
 }
+
+
+void update_inventory_texture( SDL_Renderer* renp, SDL_Texture* texp_font,
+			       SDL_Texture* texp_inventory,
+			       Player_t* p_player );
+
+void draw_inventory( SDL_Renderer* renp, SDL_Texture* texp_font,
+		     SDL_Texture* texp_sprite,
+		     SDL_Texture* texp_inventory, Player_t* p_player )
+{
+	char sz_num [12];
+	SDL_Rect src, dst;
+	SDL_SetRenderTarget( renp, texp_inventory );
+	SDL_SetRenderDrawColor( renp, 0, 0, 0, 255 );
+	SDL_RenderClear( renp );
+	SDL_SetRenderDrawColor( renp, 170, 170, 170, 255 );
+	dst.w = 8;
+	dst.h = 8;
+	dst.x = 4 + 32;
+	dst.y = p_player->pldata.selected_item * 32 + 48 + 4;
+	SDL_RenderFillRect( renp, &dst );
+	src.w = 16;
+	src.h = 16;
+	dst.w = 16;
+	dst.h = 16;
+	src.x = 0;
+	src.y = 0;
+	dst.x = 16;
+	dst.y = 48;
+	for (int i = 0; i < 3; ++i)
+	{
+		SDL_RenderCopy( renp, texp_sprite, &src, &dst );
+		sprintf( sz_num, "%d", p_player->pldata.inventory[i].amount );
+		draw_text( renp, texp_font, dst.x + 32, dst.y, sz_num );
+		dst.y += 32;
+		src.y += 32;
+	}
+	SDL_SetRenderTarget( renp, NULL );
+	src.x = 0;
+	src.y = 0;
+	src.w = Lx_inventory_pix;
+	src.h = Ly_inventory_pix;
+	dst.x = Lx_room_pix;
+	dst.y = 0;
+	dst.w = Lx_inventory_pix;
+	dst.h = Ly_inventory_pix;
+	SDL_RenderCopy( renp, texp_inventory, &src, &dst );
+}

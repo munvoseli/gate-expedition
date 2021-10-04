@@ -11,7 +11,7 @@
 #include "posutils.c"
 #include "controls.c" // also events
 #include "player.c"
-
+#include "playerutils.c"
 #include "drawing.c"
 #include "loop-client.c"
 
@@ -39,6 +39,7 @@ int main
 	init_room( 0, &room );
 	init_client (&player);
 	init_controls (&player.controls);
+	load_pldata( &player );
 	while (keepGoing)
 	{
 		while (SDL_PollEvent (&event))
@@ -46,7 +47,8 @@ int main
 		loop_client (keystates, &player, &room);
 		draw_room (&room, renp, texp_sprite, texp_bg);
 		draw_player (&player, renp, texp_sprite);
-		draw_text( renp, texp_font, 0, 0, "0123456789" );
+		draw_inventory( renp, texp_font, texp_sprite,
+				texp_inventory, &player );
 		SDL_RenderPresent (renp);
 		SDL_Delay (65);
 	}
@@ -57,5 +59,6 @@ int main
 	IMG_Quit ();
 	SDL_Quit ();
 	save_room( &room );
+	save_pldata( &player );
 	return 0;
 }

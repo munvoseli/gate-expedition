@@ -148,3 +148,29 @@ void init_player
 	p_player->size.x = 6*16;
 	p_player->size.y = 6*16;
 }
+
+
+
+
+void player_break_in_dir( Room_t* p_room, Player_t* p_player, int dir )
+{
+	int xo = 0;
+	int yo = 0;
+	if (dir == 0)
+		yo = -(96 + 256);
+	else if (dir == 2)
+		yo = 96 + 255;
+	else if (dir == 1)
+		xo = 96 + 255;
+	else
+		xo = -(96 + 256);
+	int tile_x = (p_player->pos.x + xo) >> 8;
+	int tile_y = (p_player->pos.y + yo) >> 8;
+	if (p_player->pldata.inventory[p_player->pldata.selected_item].amount == 0 && p_player->pldata.selected_item)
+		return;
+	if (p_room->tiles[tile_x][tile_y])
+		++p_player->pldata.inventory[p_room->tiles[tile_x][tile_y]].amount;
+	if (p_player->pldata.selected_item)
+		--p_player->pldata.inventory[p_player->pldata.selected_item].amount;
+	p_room->tiles[tile_x][tile_y] = p_player->pldata.selected_item;
+}

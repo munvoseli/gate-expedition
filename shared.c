@@ -55,6 +55,7 @@ typedef struct Controls_struct
 	Control dir [4]; // use breadquest directions, 0N 1E 2S 3W
 	Control inr [4]; // interaction
 	Control jump;
+	Control inv [2];
 } Controls_t;
 
 typedef unsigned int Item;
@@ -69,6 +70,7 @@ typedef struct Inventory_item_struct
 typedef struct Player_data_struct
 {
 	Inventory_item inventory [256];
+	unsigned int selected_item;
 } Pldata;
 
 typedef struct Player_struct

@@ -61,6 +61,8 @@ void update_controls
 	update_control(keystates[SDL_SCANCODE_J], &p_controls->inr[2].held, &p_controls->inr[2].dur);
 	update_control(keystates[SDL_SCANCODE_H], &p_controls->inr[3].held, &p_controls->inr[3].dur);
 	update_control(keystates[SDL_SCANCODE_SPACE], &p_controls->jump.held, &p_controls->jump.dur);
+	update_control(keystates[SDL_SCANCODE_P], &p_controls->inv[0].held, &p_controls->inv[0].dur);
+	update_control(keystates[SDL_SCANCODE_N], &p_controls->inv[1].held, &p_controls->inv[1].dur);
 }
 
 
