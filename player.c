@@ -95,7 +95,7 @@ Pos mv_player_room
 	{
 		for (tile_cur.y = tile_bgn.y; tile_cur.y <= tile_end.y; ++tile_cur.y)
 		{
-			if (!p_room->tiles [tile_cur.x] [tile_cur.y])
+			if (p_room->tiles [tile_cur.x] [tile_cur.y] != 1)
 				continue;
 			p_player->is_on_ground = 1;
 			if (!coll)
@@ -173,4 +173,12 @@ void player_break_in_dir( Room_t* p_room, Player_t* p_player, int dir )
 	if (p_player->pldata.selected_item)
 		--p_player->pldata.inventory[p_player->pldata.selected_item].amount;
 	p_room->tiles[tile_x][tile_y] = p_player->pldata.selected_item;
+}
+
+void player_test_portal( Room_t* p_room, Player_t* p_player )
+{
+	int tile_x = p_player->pos.x >> 8;
+	int tile_y = p_player->pos.y >> 8;
+	if (p_room->tiles[tile_x][tile_y] == 2)
+		switch_to_room_id( 1 - p_room->id, p_room );
 }

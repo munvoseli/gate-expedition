@@ -44,4 +44,5 @@ void loop_client
 		++p_player->pldata.selected_item;
 	p_player->is_on_ground = 0;
 	player_move (p_player, p_room);
+	player_test_portal( p_room, p_player );
 }

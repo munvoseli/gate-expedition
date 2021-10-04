@@ -46,3 +46,9 @@ void init_room( unsigned int id, Room_t* p_room )
 {
 	load_room( id, p_room ) && generate_room( id, p_room );
 }
+
+void switch_to_room_id( unsigned int id, Room_t* p_room )
+{
+	save_room( p_room );
+	load_room( id, p_room ) && generate_room( id, p_room );
+}
