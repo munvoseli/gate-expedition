@@ -88,9 +88,9 @@ void update_tiles_corner
 	{
 		for (int j = y0; j < y1; ++j)
 		{
-			h = p_room->tiles[i+ho][j   ];
-			d = p_room->tiles[i+ho][j+vo];
-			v = p_room->tiles[i   ][j+vo];
+			h = p_room->tiles[i+ho][j   ] == 1;
+			d = p_room->tiles[i+ho][j+vo] == 1;
+			v = p_room->tiles[i   ][j+vo] == 1;
 			set_rect_from_adj (&src, h,v,d,p_room->tiles[i][j]);
 			src.x += xpo;
 			src.y += ypo;
