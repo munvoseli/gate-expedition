@@ -147,6 +147,7 @@ void init_player
 	p_player->vel.y = 0;
 	p_player->size.x = 6*16;
 	p_player->size.y = 6*16;
+	p_player->control_mode = PMODE_MOVE;
 }
 
 

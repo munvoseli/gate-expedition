@@ -6,6 +6,9 @@
 
 #define TILE_COLL 1
 
+#define PMODE_MOVE 0
+#define PMODE_TEXT 1
+
 typedef unsigned char Tileinfo;
 
 typedef unsigned char Tileid;
@@ -80,6 +83,7 @@ typedef struct Player_struct
 	Pos size;
 	char is_on_ground;
 	char has_jumped;
+	char control_mode;
 	Controls_t controls;
 	Pldata pldata;
 } Player_t;

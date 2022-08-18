@@ -48,21 +48,23 @@ void update_controls_duration
 		++*(p + i);
 }
 
+#define UP_CL(code, cont) update_control(keystates[SDL_SCANCODE_##code], &p_controls->cont.held, &p_controls->cont.dur);
+
 void update_controls
 (const Uint8* keystates, Controls_t* p_controls)
 {
 	update_controls_duration(p_controls);
-	update_control(keystates[SDL_SCANCODE_F], &p_controls->dir[0].held, &p_controls->dir[0].dur);
-	update_control(keystates[SDL_SCANCODE_D], &p_controls->dir[1].held, &p_controls->dir[1].dur);
-	update_control(keystates[SDL_SCANCODE_S], &p_controls->dir[2].held, &p_controls->dir[2].dur);
-	update_control(keystates[SDL_SCANCODE_A], &p_controls->dir[3].held, &p_controls->dir[3].dur);
-	update_control(keystates[SDL_SCANCODE_K], &p_controls->inr[0].held, &p_controls->inr[0].dur);
-	update_control(keystates[SDL_SCANCODE_L], &p_controls->inr[1].held, &p_controls->inr[1].dur);
-	update_control(keystates[SDL_SCANCODE_J], &p_controls->inr[2].held, &p_controls->inr[2].dur);
-	update_control(keystates[SDL_SCANCODE_H], &p_controls->inr[3].held, &p_controls->inr[3].dur);
-	update_control(keystates[SDL_SCANCODE_SPACE], &p_controls->jump.held, &p_controls->jump.dur);
-	update_control(keystates[SDL_SCANCODE_P], &p_controls->inv[0].held, &p_controls->inv[0].dur);
-	update_control(keystates[SDL_SCANCODE_N], &p_controls->inv[1].held, &p_controls->inv[1].dur);
+	UP_CL( F , dir[0] );
+	UP_CL( D , dir[1] );
+	UP_CL( S , dir[2] );
+	UP_CL( A , dir[3] );
+	UP_CL( K , inr[0] );
+	UP_CL( L , inr[1] );
+	UP_CL( J , inr[2] );
+	UP_CL( H , inr[3] );
+	UP_CL( SPACE , jump );
+	UP_CL( P , inv[0] );
+	UP_CL( N , inv[1] );
 }
 
 
